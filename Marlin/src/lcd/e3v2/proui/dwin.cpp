@@ -3842,6 +3842,7 @@ void drawStepsMenu() {
     if (notCurrentMenu(laserSettings)) {
       BACK_ITEM(returnToPreviousMenu);
       EDIT_ITEM(ICON_LaserToggle, MSG_LASER_TOGGLE, onDrawChkbMenu, laserToggle, &laser_device.laser_enabled);
+      EDIT_ITEM(ICON_FanSpeed, MSG_FAN_SPEED, onDrawPInt8Menu, setFanSpeed, &thermalManager.fan_speed[FAN]);
       MENU_ITEM(ICON_Homing, MSG_AUTO_HOME, onDrawMenuItem, autoHome);
       EDIT_ITEM(ICON_LaserFocus, MSG_LASER_FOCUS, onDrawPFloatMenu, setMoveZ, &current_position.z);
       EDIT_ITEM(ICON_MoveX, MSG_MOVE_X, onDrawPFloatMenu, setMoveX, &current_position.x);

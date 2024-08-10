@@ -74,4 +74,35 @@ class spindle_laser_soft_pwm
     static void laser_set(const bool turn_on);
 };
 
-extern class spindle_laser_soft_pwm laser_device;
+// extern class spindle_laser_soft_pwm laser_device;
+
+class spindle_laser_fan_pwm
+{
+  public:
+    static xyz_pos_t homepos;
+    static bool laser_enabled;
+    // float pause_before_position_x=0, pause_before_position_y=0;
+    static uint8_t save_power;// 激光功率
+    static void init_device();
+    // 快速停止激光 等同命令 "M5 I"
+    static void quick_stop();
+    static bool is_laser_device();
+    static bool is_fdm_device();
+    //0-1000 比例转换为0-255
+    static uint8_t power16_to_8(const_float_t power);
+    // 设置并启动timer3 的pwm
+    static void laser_power_start(const uint8_t power);
+    // 将pwm占空比设置为1，以最弱的激光输出
+    static void laser_power_stop();
+    // 关闭激光PWM输出， 暂停timer3中断，无激光输出
+    static void laser_power_close();
+    //打开激光pwm，以最弱的激光输出
+    static void laser_power_open();
+    #if HAS_MEDIA
+      static void laser_range();
+    #endif
+    static void laser_home();
+    static void laser_set(const bool turn_on);
+};
+
+extern class spindle_laser_fan_pwm laser_device;
