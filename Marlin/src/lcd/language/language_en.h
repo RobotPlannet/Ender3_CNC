@@ -919,6 +919,7 @@ namespace LanguageNarrow_en {
   LSTR MSG_MOVE_E_100                     = _UxGT("Move Ext. 100mm");
   LSTR MSG_MOVE_Z_HOME                    = _UxGT("Move Z to Home");
   LSTR MSG_SET_AS_HOME                    = _UxGT("Set as Home");
+  LSTR MSG_RETURN_HOME                    = _UxGT("Return Home");
   LSTR MSG_POSITION_IS_UNKNOWN            = _UxGT("WARNING: current position is unknown, home axes");
   LSTR MSG_Z_POSITION_IS_UNKNOWN          = _UxGT("WARNING: Z position unknown, move Z to home");
   LSTR MSG_ENDSTOP_DIAGNOSTICS            = _UxGT("End-stops diag.");

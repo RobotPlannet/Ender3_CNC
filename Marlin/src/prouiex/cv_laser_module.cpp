@@ -8,6 +8,8 @@ bool spindle_laser_fan_pwm::laser_enabled = false;
 uint8_t spindle_laser_fan_pwm::save_power = 255;// 激光功率
 
 void spindle_laser_fan_pwm::init_device() {
+    homepos.x =  0;
+    homepos.y =  0;
 }
 
 // 快速停止激光 等同命令 "M5 I"
@@ -25,7 +27,7 @@ bool spindle_laser_fan_pwm::is_fdm_device() {
 
 // 0-1000 比例转换为0-255
 uint8_t spindle_laser_fan_pwm::power16_to_8(const_float_t power) {
-    return power * 255 /1000;
+    return power * save_power /1000;
 }
 
 // 设置并启动timer3 的pwm
@@ -45,7 +47,7 @@ void spindle_laser_fan_pwm::laser_power_close() {
 
 // 打开激光pwm，以最弱的激光输出
 void spindle_laser_fan_pwm::laser_power_open() {
-    laser_power_start(7);
+    laser_power_start(8);
 }
 
 #if HAS_MEDIA
@@ -54,14 +56,18 @@ void spindle_laser_fan_pwm::laser_power_open() {
 #endif
 
 void spindle_laser_fan_pwm::laser_home() {
+    homepos.x =  0;
+    homepos.y =  0;
 }
 
 void spindle_laser_fan_pwm::laser_set(const bool turn_on) {
     laser_enabled = turn_on;
     if(turn_on){
         hal.set_pwm_frequency(pin_t(FAN0_PIN), 2500);
+        laser_power_open();
     }else{
         hal.set_pwm_frequency(pin_t(FAN0_PIN), 10);
+        laser_power_close();
     }
 
 }

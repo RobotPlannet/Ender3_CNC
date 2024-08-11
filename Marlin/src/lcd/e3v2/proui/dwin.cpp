@@ -3810,6 +3810,11 @@ void drawStepsMenu() {
     redrawMenu();
   }
 
+  void returnHome() {
+    gcode.process_subcommands_now(F("G0 X0Y0Z0"));
+    redrawMenu();
+  }
+
   void laserOn(const bool turn_on) {
     laser_device.laser_set(turn_on);
     dwinDrawDashboard();
@@ -3848,6 +3853,7 @@ void drawStepsMenu() {
       EDIT_ITEM(ICON_MoveX, MSG_MOVE_X, onDrawPFloatMenu, setMoveX, &current_position.x);
       EDIT_ITEM(ICON_MoveY, MSG_MOVE_Y, onDrawPFloatMenu, setMoveY, &current_position.y);
       MENU_ITEM(ICON_SetHome, MSG_SET_AS_HOME, onDrawMenuItem, setHome);
+      MENU_ITEM(ICON_Homing, MSG_RETURN_HOME, onDrawMenuItem, returnHome);
     }
     SET_MENU(laserSettings, MSG_LASER_MENU);
   }
