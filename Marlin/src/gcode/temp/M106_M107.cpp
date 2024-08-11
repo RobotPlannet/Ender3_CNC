@@ -85,43 +85,48 @@ void GcodeSuite::M106() {
 
   TERN_(FOAMCUTTER_XYUV, speed *= 2.55f); // Get command in % of max heat
 
-  // set custom frequency for fan
-  const uint8_t dfreq = parser.ushortval('F');
-  // Set frequency for FAN
-  switch(pfan){
-    #ifdef FAN0_PIN
-      case 0: hal.set_pwm_frequency(pin_t(FAN0_PIN), dfreq); break;
-    #endif
-    #ifdef FAN1_PIN
-      case 1: hal.set_pwm_frequency(pin_t(FAN1_PIN), dfreq); break;
-    #endif
-    #ifdef FAN2_PIN
-      case 2: hal.set_pwm_frequency(pin_t(FAN2_PIN), dfreq); break;
-    #endif
-    #ifdef FAN3_PIN
-      case 3: hal.set_pwm_frequency(pin_t(FAN3_PIN), dfreq); break;
-    #endif
-    #ifdef FAN4_PIN
-      case 4: hal.set_pwm_frequency(pin_t(FAN4_PIN), dfreq); break;
-    #endif
-    #ifdef FAN5_PIN
-      case 5: hal.set_pwm_frequency(pin_t(FAN5_PIN), dfreq); break;
-    #endif
-    #ifdef FAN5_PIN
-      case 6: hal.set_pwm_frequency(pin_t(FAN6_PIN), dfreq); break;
-    #endif
-    #ifdef FAN5_PIN
-      case 7: hal.set_pwm_frequency(pin_t(FAN7_PIN), dfreq); break;
-    #endif
+  if(parser.seenval('F'))
+  {
+    // set custom frequency for fan
+    const uint16_t dfreq = parser.ushortval('F');
+    // Set frequency for FAN
+    switch(pfan){
+      #ifdef FAN0_PIN
+        case 0: hal.set_pwm_frequency(pin_t(FAN0_PIN), dfreq); break;
+      #endif
+      #ifdef FAN1_PIN
+        case 1: hal.set_pwm_frequency(pin_t(FAN1_PIN), dfreq); break;
+      #endif
+      #ifdef FAN2_PIN
+        case 2: hal.set_pwm_frequency(pin_t(FAN2_PIN), dfreq); break;
+      #endif
+      #ifdef FAN3_PIN
+        case 3: hal.set_pwm_frequency(pin_t(FAN3_PIN), dfreq); break;
+      #endif
+      #ifdef FAN4_PIN
+        case 4: hal.set_pwm_frequency(pin_t(FAN4_PIN), dfreq); break;
+      #endif
+      #ifdef FAN5_PIN
+        case 5: hal.set_pwm_frequency(pin_t(FAN5_PIN), dfreq); break;
+      #endif
+      #ifdef FAN5_PIN
+        case 6: hal.set_pwm_frequency(pin_t(FAN6_PIN), dfreq); break;
+      #endif
+      #ifdef FAN5_PIN
+        case 7: hal.set_pwm_frequency(pin_t(FAN7_PIN), dfreq); break;
+      #endif
+    }
   }
 
-  // Set speed, with constraint
-  thermalManager.set_fan_speed(pfan, speed);
+  // M106 F<freq> can set frequency independently
+  if(!parser.seenval('F') || parser.seenval('S')){
+    // Set speed, with constraint
+    thermalManager.set_fan_speed(pfan, speed);
 
-  TERN_(LASER_SYNCHRONOUS_M106_M107, planner.buffer_sync_block(BLOCK_BIT_SYNC_FANS));
+    if (TERN0(DUAL_X_CARRIAGE, idex_is_duplicating()))  // pfan == 0 when duplicating
+      thermalManager.set_fan_speed(1 - pfan, speed);
 
-  if (TERN0(DUAL_X_CARRIAGE, idex_is_duplicating()))  // pfan == 0 when duplicating
-    thermalManager.set_fan_speed(1 - pfan, speed);
+  }
 }
 
 /**
@@ -137,7 +142,6 @@ void GcodeSuite::M107() {
   if (TERN0(DUAL_X_CARRIAGE, idex_is_duplicating()))  // pfan == 0 when duplicating
     thermalManager.set_fan_speed(1 - pfan, 0);
 
-  TERN_(LASER_SYNCHRONOUS_M106_M107, planner.buffer_sync_block(BLOCK_BIT_SYNC_FANS));
 }
 
 #endif // HAS_FAN

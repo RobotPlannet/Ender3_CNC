@@ -60,11 +60,9 @@ void spindle_laser_fan_pwm::laser_home() {
 void spindle_laser_fan_pwm::laser_set(const bool turn_on) {
     laser_enabled = turn_on;
     if(turn_on){
-        hal.set_pwm_frequency(pin_t(FAN0_PIN), 1000);
-        laser_power_open();
+        hal.set_pwm_frequency(pin_t(FAN0_PIN), 2500);
     }else{
         hal.set_pwm_frequency(pin_t(FAN0_PIN), 10);
-        laser_power_close();
     }
 
 }
