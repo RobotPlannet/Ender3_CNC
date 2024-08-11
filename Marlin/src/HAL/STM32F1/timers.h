@@ -69,7 +69,7 @@ typedef uint16_t hal_timer_t;
   #if defined(MCU_STM32F103CB) || defined(MCU_STM32F103C8)
     #define MF_TIMER_STEP       4  // For C8/CB boards, use timer 4
   #else
-    #define MF_TIMER_STEP       5  // for other boards, five is fine.
+    #define MF_TIMER_STEP       4  // for other boards, five is fine.
   #endif
 #endif
 #ifndef MF_TIMER_PULSE

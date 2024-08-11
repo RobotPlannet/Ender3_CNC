@@ -455,6 +455,9 @@ PGMSTR(str_t_heating_failed, STR_T_HEATING_FAILED);
     #endif
 
     TERN_(REPORT_FAN_CHANGE, report_fan_speed(fan));
+
+    // sync block when set fan speed on the screen
+    TERN_(LASER_SYNCHRONOUS_M106_M107, planner.buffer_sync_block(BLOCK_BIT_SYNC_FANS));
   }
 
   #if ENABLED(REPORT_FAN_CHANGE)
