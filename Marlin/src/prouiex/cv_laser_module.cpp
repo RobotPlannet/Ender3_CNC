@@ -45,7 +45,7 @@ void spindle_laser_fan_pwm::laser_power_close() {
 
 // 打开激光pwm，以最弱的激光输出
 void spindle_laser_fan_pwm::laser_power_open() {
-    laser_power_start(2);
+    laser_power_start(7);
 }
 
 #if HAS_MEDIA
@@ -54,7 +54,6 @@ void spindle_laser_fan_pwm::laser_power_open() {
 #endif
 
 void spindle_laser_fan_pwm::laser_home() {
-    gcode.process_subcommands_now(F("G0 Z5"));
 }
 
 void spindle_laser_fan_pwm::laser_set(const bool turn_on) {
